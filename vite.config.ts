@@ -2,6 +2,7 @@ import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { defineConfig } from "vite";
 
 export default defineConfig({
+  root: "src/ui",
   plugins: [svelte()],
   server: {
     host: "127.0.0.1",
@@ -11,7 +12,7 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: "dist",
+    outDir: "../../dist",
     emptyOutDir: true
   }
 });
