@@ -1,0 +1,32 @@
+{
+  "name": "qmd",
+  "version": "1.0.0",
+  "description": "Qmd - Quick Markdown Viewer, a local Markdown browsing CLI tool",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"vite --host 127.0.0.1\" \"bun run src/cli/index.ts ./demo-docs --no-open\"",
+    "build:ui": "vite build",
+    "generate:assets": "bun run scripts/generate-static-assets.ts",
+    "build:cli": "bun run generate:assets && bun build src/cli/index.ts --target bun --compile --outfile bin/qmd",
+    "build": "bun run build:ui && bun run build:cli",
+    "lint": "svelte-check --tsconfig ./tsconfig.json",
+    "test": "bun test"
+  },
+  "bin": {
+    "qmd": "./bin/qmd"
+  },
+  "dependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "dompurify": "^3.2.4",
+    "highlight.js": "^11.11.1",
+    "marked": "^15.0.7",
+    "svelte": "^5.19.0",
+    "vite": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "concurrently": "^9.1.2",
+    "svelte-check": "^4.1.4",
+    "typescript": "^5.7.3"
+  }
+}

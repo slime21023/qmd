@@ -1,0 +1,387 @@
+@import "./variables.css";
+@import "highlight.js/styles/github-dark.css";
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-rows: 56px auto 1fr;
+  height: 100%;
+}
+
+.app-shell:not(:has(.banner)) {
+  grid-template-rows: 56px 1fr;
+}
+
+.resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.brand {
+  display: flex;
+  flex: 1;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.brand strong {
+  white-space: nowrap;
+}
+
+.brand span {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icon-button,
+.theme-toggle {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  cursor: pointer;
+}
+
+.icon-button:hover,
+.theme-toggle:hover {
+  border-color: var(--accent);
+}
+
+.banner {
+  padding: 10px 16px;
+  border-bottom: 1px solid color-mix(in srgb, var(--danger), transparent 55%);
+  background: color-mix(in srgb, var(--danger), transparent 90%);
+  color: var(--danger);
+}
+
+.workspace {
+  display: flex;
+  min-height: 0;
+}
+
+.sidebar-wrap {
+  position: relative;
+  display: flex;
+  width: var(--sidebar-width);
+  min-width: 220px;
+  max-width: 460px;
+  border-right: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.sidebar {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-header strong,
+.sidebar-header small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sidebar-header small {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.resize-handle {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  width: 8px;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  cursor: col-resize;
+}
+
+.resize-handle:hover {
+  background: color-mix(in srgb, var(--accent), transparent 75%);
+}
+
+.search {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  margin: 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel-alt);
+}
+
+.search span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.search input {
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+}
+
+.search button {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.search button:hover {
+  background: var(--border);
+  color: var(--text);
+}
+
+.file-tree {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  padding: 4px 8px 16px;
+}
+
+.file-tree ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.file-tree button {
+  display: grid;
+  width: 100%;
+  min-height: 32px;
+  grid-template-columns: 18px 1fr;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px 4px calc(8px + var(--level) * 16px);
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.file-tree button:hover {
+  background: var(--panel-alt);
+}
+
+.file-tree button.selected {
+  background: color-mix(in srgb, var(--accent), transparent 82%);
+  color: var(--accent-strong);
+}
+
+.twist {
+  color: var(--muted);
+  text-align: center;
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty,
+.state {
+  color: var(--muted);
+}
+
+.empty {
+  padding: 8px;
+}
+
+.markdown-shell {
+  min-width: 0;
+  flex: 1;
+  overflow: auto;
+  background: var(--bg);
+}
+
+.document-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 18px 42px;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg), transparent 4%);
+  backdrop-filter: blur(8px);
+}
+
+.document-header h1 {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.document-header p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.markdown-body {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 34px 42px 80px;
+  line-height: 1.7;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3 {
+  line-height: 1.25;
+}
+
+.markdown-body a {
+  color: var(--accent-strong);
+}
+
+.heading-anchor {
+  opacity: 0;
+  text-decoration: none;
+}
+
+h1:hover .heading-anchor,
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor,
+h5:hover .heading-anchor,
+h6:hover .heading-anchor {
+  opacity: 1;
+}
+
+.markdown-body pre {
+  overflow: auto;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--code-bg);
+  color: var(--code-text);
+}
+
+.markdown-body code {
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--border), transparent 35%);
+  padding: 2px 5px;
+}
+
+.markdown-body pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.markdown-body blockquote {
+  margin-left: 0;
+  padding-left: 16px;
+  border-left: 4px solid var(--border);
+  color: var(--muted);
+}
+
+.markdown-body img {
+  max-width: 100%;
+}
+
+.state {
+  display: grid;
+  min-height: 100%;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.state.error {
+  color: var(--danger);
+}
+
+@media (max-width: 767px) {
+  .brand span {
+    display: none;
+  }
+
+  .workspace {
+    position: relative;
+  }
+
+  .sidebar-wrap {
+    position: absolute;
+    z-index: 4;
+    width: min(86vw, 360px);
+    height: 100%;
+    box-shadow: var(--shadow);
+  }
+
+  .resize-handle {
+    display: none;
+  }
+
+  .document-header {
+    padding: 16px 20px;
+  }
+
+  .markdown-body {
+    padding: 24px 20px 64px;
+  }
+}
